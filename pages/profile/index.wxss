@@ -1,0 +1,286 @@
+/* pages/profile/index.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center .userinfo and .trust-history-section */
+  padding: 20rpx; /* Add padding to container instead of 0 for userinfo */
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20rpx; /* Reduced margin-top */
+  background-color: #fff;
+  width: 100%; /* Make userinfo card take full width */
+  max-width: 700rpx; /* Optional: constrain max width */
+  padding: 30rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+  margin-bottom: 30rpx;
+}
+
+.userinfo-avatar {
+  width: 160rpx; /* Increased size */
+  height: 160rpx;
+  margin-bottom: 20rpx; /* Adjusted margin */
+  border-radius: 50%;
+  border: 4rpx solid #eee;
+}
+
+.userinfo-nickname {
+  font-size: 36rpx; /* Increased size */
+  color: #333; /* Darker color */
+  font-weight: bold;
+  margin-bottom: 15rpx;
+}
+
+.edit-profile-btn {
+  background-color: #07c160;
+  color: white;
+  font-size: 26rpx;
+  padding: 8rpx 25rpx;
+  border-radius: 30rpx; /* Pill shape */
+  margin-top: 0; /* Remove top margin if it's close to nickname */
+  margin-bottom: 20rpx;
+  line-height: 1.5;
+  border: none;
+}
+
+/* Credit Score Section */
+.credit-score-section {
+  width: 100%;
+  margin-top: 10rpx; /* Spacing from edit button */
+  padding: 20rpx;
+  background-color: #f9f9f9; /* Light bg for section */
+  border-radius: 12rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.credit-score-display {
+  display: flex;
+  flex-direction: column; /* Stack label, value, descriptor */
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.credit-score-label {
+  font-size: 28rpx;
+  color: #555;
+  margin-bottom: 5rpx;
+}
+
+.credit-score-value {
+  font-size: 48rpx; /* Larger score */
+  font-weight: bold;
+  color: #07c160; /* Default to green */
+}
+/* Color variants for score based on descriptor - optional */
+.score-优秀 { color: #2ecc71; } /* Green for Excellent */
+.score-良好 { color: #3498db; } /* Blue for Good */
+.score-一般 { color: #f1c40f; } /* Yellow for Average */
+.score-待提高 { color: #e67e22; } /* Orange for Needs Improvement */
+.score-需关注 { color: #e74c3c; } /* Red for Low */
+
+
+.credit-score-descriptor {
+  font-size: 26rpx;
+  color: #777;
+  margin-top: 5rpx;
+}
+
+.progress-bar-container {
+  width: 80%;
+  margin: 0 auto; /* Center the progress bar */
+  height: 16rpx; /* Thinner bar */
+  background-color: #e0e0e0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-bar-track {
+  height: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.5s ease-in-out;
+  /* background-color is set inline based on score */
+}
+
+.credit-score-loading {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* Bio Section */
+.bio-section {
+  width: 100%;
+  margin-top: 15rpx;
+  padding: 15rpx;
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  text-align: left;
+}
+.bio-label {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 8rpx;
+  display: block;
+}
+.bio-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+
+/* Trust History Section */
+.trust-history-section {
+  width: 100%;
+  max-width: 700rpx; /* Optional: constrain max width */
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.trust-history-list {
+  /* Styles if you had actual list items */
+}
+
+.trust-log-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 26rpx;
+}
+.trust-log-item:last-child {
+  border-bottom: none;
+}
+.log-description { color: #555; flex-grow: 1; margin-right: 10rpx; }
+.log-points { font-weight: bold; }
+.log-points.positive { color: #27ae60; }
+.log-points.negative { color: #c0392b; }
+.log-timestamp { color: #999; font-size: 24rpx; }
+
+
+.empty-history-placeholder {
+  font-size: 26rpx;
+  color: #888;
+  text-align: center;
+  padding: 30rpx 10rpx;
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  line-height: 1.6;
+}
+
+/* Login Button (if no user info) */
+.userinfo > button { /* Targeting the initial login button */
+  margin-top: 60rpx;
+  background-color: #07c160;
+  color: white;
+  border: none;
+  padding: 15rpx 40rpx;
+  border-radius: 8rpx;
+  font-size: 30rpx;
+}
+
+
+/* Edit Profile Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40rpx;
+  border-radius: 16rpx;
+  width: 85%;
+  max-width: 600rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 25rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #555;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 15rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  height: 150rpx; /* Adjust as needed */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between; /* Or use space-around */
+  margin-top: 30rpx;
+}
+
+.modal-actions button {
+  flex-grow: 1;
+  font-size: 30rpx;
+  padding: 15rpx 0;
+  border-radius: 8rpx;
+  line-height: 1.5;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  margin-right: 20rpx; /* Space between buttons */
+}
+
+.submit-btn {
+  background-color: #07c160;
+  color: white;
+}

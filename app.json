@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/community/index",
+    "pages/groupbuy/index",
+    "pages/services/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Mini Program",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/community/index",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/groupbuy/index",
+        "text": "团购"
+      },
+      {
+        "pagePath": "pages/services/index",
+        "text": "服务"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

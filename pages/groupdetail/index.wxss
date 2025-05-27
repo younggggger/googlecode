@@ -1,0 +1,276 @@
+/* pages/groupdetail/index.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.group-header {
+  padding: 20rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+  text-align: center;
+}
+
+.group-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.actions-bar {
+  padding: 15rpx 20rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  justify-content: flex-start; /* Align button to the left */
+  align-items: center;
+}
+
+.create-post-btn {
+  background-color: #07c160;
+  color: white;
+  font-size: 28rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+}
+
+.create-post-btn .icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 10rpx;
+}
+
+.join-prompt {
+  font-size: 28rpx;
+  color: #888;
+  padding: 10rpx 0;
+}
+
+.posts-scroll-view {
+  flex-grow: 1;
+  padding-top: 10rpx; /* Add some space so first post isn't flush with bar */
+}
+
+.post-list {
+  padding: 0 20rpx;
+}
+
+.post-item {
+  background-color: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  padding: 25rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.post-author-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.author-avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-right: 15rpx;
+  background-color: #eee; /* Placeholder bg */
+}
+
+.author-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.author-credit-score {
+  font-size: 24rpx;
+  color: #07c160; /* Green for positive score */
+}
+.author-credit-score:before {
+  content: "信用分: ";
+  color: #666;
+}
+
+
+.post-content {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15rpx;
+  white-space: pre-wrap; /* Preserve line breaks and spaces */
+}
+
+.post-images {
+  display: flex;
+  flex-wrap: wrap; /* Allow images to wrap */
+  margin-bottom: 10rpx;
+}
+
+.post-image {
+  width: calc(33.333% - 10rpx); /* Adjust for 3 images per row with spacing */
+  height: 200rpx; /* Fixed height for images */
+  margin-right: 10rpx;
+  margin-bottom: 10rpx;
+  background-color: #e9e9e9;
+  border-radius: 8rpx;
+}
+.post-image:nth-child(3n) {
+  margin-right: 0;
+}
+/* For 1 or 2 images, make them larger */
+.post-images image:nth-child(1):nth-last-child(1), /* Single image */
+.post-images image:nth-child(1):nth-last-child(2), /* First of two */
+.post-images image:nth-child(2):nth-last-child(1) { /* Second of two */
+  width: calc(50% - 5rpx); /* Adjust for 2 images per row */
+}
+
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 15rpx;
+  padding-top: 10rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.post-time {
+  /* Styles for time if any */
+}
+
+.post-interactions {
+  display: flex;
+}
+
+.interaction-item {
+  display: flex;
+  align-items: center;
+  margin-left: 30rpx; /* Space out interaction items */
+  cursor: pointer;
+}
+
+.interaction-item .icon {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 8rpx;
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
+  text-align: center;
+  padding: 40rpx;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40rpx;
+  border-radius: 16rpx;
+  width: 80%;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.post-textarea {
+  width: 100%;
+  height: 200rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 15rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  margin-bottom: 30rpx;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  flex-grow: 1;
+  font-size: 30rpx;
+  padding: 15rpx 0;
+  border-radius: 8rpx;
+  line-height: 1.5;
+}
+
+.cancel-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  margin-right: 20rpx;
+}
+
+.submit-btn {
+  background-color: #07c160;
+  color: white;
+}
+
+/* Mock icon paths - these should exist in your project */
+/* Ensure you have these or similar icons in your /assets/icons/ directory */
+/* .icon { background-size: contain; background-repeat: no-repeat; } */
+/* Example usage if not using <image> tag:
+.add-post-icon { background-image: url('/assets/icons/add_post_icon.png'); }
+.comment-icon { background-image: url('/assets/icons/comment_icon.png'); }
+*/
+/* For this implementation, <image> tags are used in WXML, so direct CSS for icons is less critical */
+
+/* Placeholder assets - create these or use your own */
+/* /assets/mock_avatar_1.png, /assets/mock_avatar_2.png, etc. */
+/* /assets/sample_image_1.jpg, etc. */
+/* /assets/icons/add_post_icon.png */
+/* /assets/icons/comment_icon.png */
+/* /assets/default_avatar.png */
+
+/* Create dummy assets for testing if they don't exist */
+/* For example, in your terminal at the project root:
+mkdir -p assets/icons assets/images
+touch assets/icons/add_post_icon.png
+touch assets/icons/comment_icon.png
+touch assets/default_avatar.png
+touch assets/mock_avatar_1.png
+touch assets/mock_avatar_2.png
+touch assets/mock_avatar_3.png
+touch assets/mock_avatar_4.png
+touch assets/sample_image_1.jpg
+touch assets/sample_image_2.jpg
+touch assets/sample_image_3.jpg
+*/

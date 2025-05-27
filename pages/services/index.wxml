@@ -1,0 +1,4 @@
+<!--pages/services/index.wxml-->
+<view>
+  <text>Services Page</text>
+</view>

@@ -1,0 +1,4 @@
+<!--pages/home/index.wxml-->
+<view>
+  <text>Home Page</text>
+</view>

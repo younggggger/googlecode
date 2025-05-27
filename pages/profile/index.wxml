@@ -1,0 +1,72 @@
+<!--pages/profile/index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <block wx:if="{{!hasUserInfo && canIUseGetUserProfile}}">
+      <button bindtap="getUserProfile"> 获取头像昵称 </button>
+    </block>
+    <block wx:elif="{{!hasUserInfo && !canIUseGetUserProfile}}">
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    </block>
+    <block wx:else>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      <button class="edit-profile-btn" bindtap="showEditModal">编辑资料</button>
+
+      <view class="credit-score-section">
+        <view class="credit-score-display">
+          <text class="credit-score-label">邻里信用分</text>
+          <text class="credit-score-value {{creditScoreDescriptor ? 'score-' + creditScoreDescriptor : ''}}">{{neighborhoodCreditScore !== null ? neighborhoodCreditScore : '--'}}</text>
+          <text class="credit-score-descriptor" wx:if="{{creditScoreDescriptor}}">({{creditScoreDescriptor}})</text>
+        </view>
+        <!-- Simple progress bar concept (can be enhanced with actual progress element or more complex SVG) -->
+        <view class="progress-bar-container" wx:if="{{neighborhoodCreditScore !== null}}">
+          <view class="progress-bar-track">
+            <view class="progress-bar-fill" style="width: {{neighborhoodCreditScore > 120 ? 100 : (neighborhoodCreditScore < 30 ? 5 : neighborhoodCreditScore - 20)}}%; background-color: {{creditScoreDescriptor === '优秀' ? '#2ecc71' : (creditScoreDescriptor === '良好' ? '#3498db' : (creditScoreDescriptor === '一般' ? '#f1c40f' : '#e74c3c'))}};"></view>
+          </view>
+        </view>
+         <text class="credit-score-loading" wx:if="{{neighborhoodCreditScore === null && hasUserInfo}}">信用分加载中...</text>
+      </view>
+
+      <view class="bio-section" wx:if="{{userProfileDetails.bio}}">
+        <text class="bio-label">个人简介:</text>
+        <text class="bio-text">{{userProfileDetails.bio}}</text>
+      </view>
+
+    </block>
+  </view>
+
+  <view class="trust-history-section" wx:if="{{hasUserInfo}}">
+    <text class="section-title">邻里信用历史</text>
+    <view wx:if="{{trustHistory.length > 0}}" class="trust-history-list">
+      <view wx:for="{{trustHistory}}" wx:key="logId" class="trust-log-item">
+        <text class="log-description">{{item.description}}</text>
+        <text class="log-points {{item.pointsChange > 0 ? 'positive' : 'negative'}}">{{item.pointsChange > 0 ? '+' : ''}}{{item.pointsChange}}分</text>
+        <text class="log-timestamp">{{item.timestamp}}</text>
+      </view>
+    </view>
+    <view wx:else class="empty-history-placeholder">
+      <text>您最近的信用活动将在此处显示（例如：帮助邻居 +5分，参与活动 +2分）。</text>
+    </view>
+  </view>
+
+  <!-- Edit Profile Modal -->
+  <view class="modal-overlay" wx:if="{{showEditProfileModal}}" bindtap="hideEditModal">
+    <view class="modal-content" catchtap>
+      <text class="modal-title">编辑个人资料</text>
+      <view class="form-group">
+        <text class="form-label">昵称:</text>
+        <input class="form-input" type="text" value="{{editableNickname}}" bindinput="handleNicknameInput" placeholder="请输入昵称" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">个人简介:</text>
+        <textarea class="form-textarea" value="{{editableBio}}" bindinput="handleBioInput" placeholder="介绍一下自己吧 (例如：爱好，乐于助人的事情)" maxlength="100" />
+      </view>
+      <!-- Add avatar editing later if needed -->
+      <view class="modal-actions">
+        <button class="cancel-btn" bindtap="hideEditModal">取消</button>
+        <button class="submit-btn" bindtap="saveProfileChanges">保存</button>
+      </view>
+    </view>
+  </view>
+
+</view>

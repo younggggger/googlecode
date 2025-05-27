@@ -1,0 +1,61 @@
+<!--pages/groupdetail/index.wxml-->
+<view class="container">
+  <view class="group-header">
+    <text class="group-title">{{groupName}}</text>
+    <!-- Add more group details here if needed, e.g., description, member count -->
+  </view>
+
+  <view class="actions-bar" wx:if="{{isGroupMember}}">
+    <button class="create-post-btn" bindtap="showCreatePostModal">
+      <image src="/assets/icons/add_post_icon.png" class="icon" />
+      发布帖子
+    </button>
+  </view>
+  <view class="actions-bar" wx:else>
+    <text class="join-prompt">加入群组后才能发帖哦！</text>
+  </view>
+
+
+  <scroll-view scroll-y="true" class="posts-scroll-view" enable-pull-down-refresh="true" bindrefresherrefresh="onPullDownRefresh">
+    <view wx:if="{{posts.length > 0}}" class="post-list">
+      <view wx:for="{{posts}}" wx:key="postId" class="post-item">
+        <view class="post-author-info">
+          <image class="author-avatar" src="{{usersData[item.userId].avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+          <view class="author-details">
+            <text class="author-name">{{usersData[item.userId].nickname || '匿名用户'}}</text>
+            <text class="author-credit-score">信用分: {{usersData[item.userId].neighborhoodCreditScore || 'N/A'}}</text>
+          </view>
+        </view>
+        <text class="post-content">{{item.content}}</text>
+        <view class="post-images" wx:if="{{item.imageUrls && item.imageUrls.length > 0}}">
+          <image wx:for="{{item.imageUrls}}" wx:key="*this" src="{{item}}" class="post-image" mode="aspectFill" />
+        </view>
+        <view class="post-meta">
+          <text class="post-time">{{item.displayTime}}</text>
+          <view class="post-interactions">
+            <view class="interaction-item" bindtap="handleViewComments" data-postid="{{item.postId}}">
+              <image src="/assets/icons/comment_icon.png" class="icon" />
+              <text>评论 ({{item.commentCount || 0}})</text>
+            </view>
+            <!-- Add like button/count here later -->
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">
+      <text>还没有帖子，快来发布第一条吧！</text>
+    </view>
+  </scroll-view>
+
+  <!-- Create Post Modal -->
+  <view class="modal-overlay" wx:if="{{showPostModal}}" bindtap="hidePostModal">
+    <view class="modal-content" catchtap> <!-- catchtap to prevent closing when clicking inside modal -->
+      <text class="modal-title">发布新帖子</text>
+      <textarea class="post-textarea" placeholder="分享你的新鲜事..." value="{{newPostContent}}" bindinput="handlePostInput" maxlength="500"></textarea>
+      <view class="modal-actions">
+        <button class="cancel-btn" bindtap="hidePostModal">取消</button>
+        <button class="submit-btn" bindtap="submitPost">发布</button>
+      </view>
+    </view>
+  </view>
+</view>

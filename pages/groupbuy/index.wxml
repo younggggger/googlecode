@@ -1,0 +1,4 @@
+<!--pages/groupbuy/index.wxml-->
+<view>
+  <text>Group Buy Page</text>
+</view>

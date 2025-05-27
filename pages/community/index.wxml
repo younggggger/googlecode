@@ -1,0 +1,30 @@
+<!--pages/community/index.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">社区群组</text>
+    <button class="create-group-btn" bindtap="navigateToCreateGroup">创建群组</button>
+  </view>
+
+  <scroll-view scroll-y="true" class="groups-scroll-view" wx:if="{{groups.length > 0}}" enable-pull-down-refresh="true" bindrefresherrefresh="onPullDownRefresh">
+    <view class="group-list">
+      <view wx:for="{{groups}}" wx:key="groupId" class="group-item">
+        <view class="group-info" bindtap="navigateToGroupDetail" data-groupid="{{item.groupId}}" data-groupname="{{item.groupName}}">
+          <text class="group-name">{{item.groupName}}</text>
+          <text class="group-description">{{item.groupDescription}}</text>
+          <text class="group-members">成员: {{item.memberCount || 0}}</text>
+        </view>
+        <view class="group-actions">
+          <block wx:if="{{userLoggedIn}}">
+            <button wx:if="{{!joinedGroups[item.groupId]}}" class="join-btn" bindtap="handleJoinGroup" data-groupid="{{item.groupId}}">加入</button>
+            <button wx:else class="leave-btn" bindtap="handleLeaveGroup" data-groupid="{{item.groupId}}">退出</button>
+          </block>
+          <button wx:else class="login-prompt-btn" open-type="getUserInfo" bindgetuserinfo="onLoad">登录查看</button>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:else class="empty-state">
+    <text>暂无社区群组，敬请期待！</text>
+  </view>
+</view>
