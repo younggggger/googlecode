@@ -1,4 +1,48 @@
 <!--pages/groupbuy/index.wxml-->
-<view>
-  <text>Group Buy Page</text>
+<view class="container">
+  <view class="header">
+    <text class="title">热门团购</text>
+    <button class="create-group-buy-btn" bindtap="navigateToCreateGroupBuy">发起团购</button>
+  </view>
+
+  <scroll-view scroll-y="true" class="group-buy-scroll-view" wx:if="{{groupBuys.length > 0}}" enable-pull-down-refresh="true" bindrefresherrefresh="onPullDownRefresh">
+    <view class="group-buy-list">
+      <view wx:for="{{groupBuys}}" wx:key="groupBuyId" class="group-buy-item" bindtap="navigateToGroupBuyDetail" data-id="{{item.groupBuyId}}">
+        <image class="product-image" src="{{item.productDetails.imageUrl || '/assets/placeholder_product.png'}}" mode="aspectFill"></image>
+        
+        <view class="item-content">
+          <text class="item-title">{{item.title}}</text>
+          
+          <view class="initiator-info">
+            <image class="initiator-avatar" src="{{item.initiatorInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+            <text class="initiator-name">{{item.initiatorInfo.nickname || '匿名用户'}}</text>
+            <view class="initiator-credit {{item.initiatorInfo.neighborhoodCreditScore >= 100 ? 'high-score' : (item.initiatorInfo.neighborhoodCreditScore < 80 ? 'low-score' : '')}}">
+              <image wx:if="{{item.initiatorInfo.neighborhoodCreditScore >= 110}}" src="/assets/icons/verified_badge.png" class="credit-badge-icon"></image>
+              <text>信用分: {{item.initiatorInfo.neighborhoodCreditScore || 'N/A'}}</text>
+            </view>
+          </view>
+
+          <view class="price-info">
+            <text class="current-price">¥{{item.productDetails.price.toFixed(2)}}</text>
+            <text class="unit-label">/{{item.productDetails.unit}}</text>
+          </view>
+
+          <view class="progress-info">
+            <progress percent="{{(item.currentParticipants / item.minParticipants) * 100}}" stroke-width="6" activeColor="#07c160" borderRadius="3" />
+            <text class="participants-text">{{item.currentParticipants}} / {{item.minParticipants}}人已参与</text>
+          </view>
+
+          <view class="time-left">
+            <image src="/assets/icons/time_icon.png" class="time-icon" />
+            <text>剩余: {{item.timeLeft}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:else class="empty-state">
+    <image src="/assets/icons/empty_box_icon.png" class="empty-icon" />
+    <text>暂无进行中的团购，看看其他吧！</text>
+  </view>
 </view>

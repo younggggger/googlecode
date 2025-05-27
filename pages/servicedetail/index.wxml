@@ -1,0 +1,82 @@
+<!--pages/servicedetail/index.wxml-->
+<view class="container" wx:if="{{serviceDetails}}">
+  <scroll-view scroll-y="true" class="content-scroll-view">
+    <!-- Service Info Section -->
+    <view class="section service-header-section">
+      <text class="service-title-detail">{{serviceDetails.title}}</text>
+      <view class="service-meta-detail">
+        <text class="service-price-detail {{serviceDetails.price === 'Free' || serviceDetails.price === '免费' ? 'free' : ''}}">{{serviceDetails.price}}</text>
+        <text class="service-category-detail">类别: {{serviceDetails.category}}</text>
+      </view>
+      <text class="service-availability-detail">服务时间: {{serviceDetails.availability}}</text>
+    </view>
+
+    <!-- Provider Info Section -->
+    <view class="section provider-details-section">
+      <text class="section-title">服务提供方</text>
+      <view class="provider-card">
+        <image class="provider-avatar-detail" src="{{serviceDetails.providerInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+        <view class="provider-text-info">
+          <text class="provider-name-detail">{{serviceDetails.providerInfo.nickname || '匿名用户'}}</text>
+          <view class="provider-credit-detail {{serviceDetails.providerInfo.neighborhoodCreditScore >= 100 ? 'high-score' : (serviceDetails.providerInfo.neighborhoodCreditScore < 80 ? 'low-score' : '')}}">
+            <image wx:if="{{serviceDetails.providerInfo.neighborhoodCreditScore >= 110}}" src="/assets/icons/verified_badge.png" class="credit-badge-icon-detail"></image>
+            <text>邻里信用分: {{serviceDetails.providerInfo.neighborhoodCreditScore || 'N/A'}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="provider-bio" wx:if="{{serviceDetails.providerInfo.bio}}">
+        <text class="bio-text">{{serviceDetails.providerInfo.bio}}</text>
+      </view>
+    </view>
+
+    <!-- Service Description Section -->
+    <view class="section description-section">
+      <text class="section-title">服务详情</text>
+      <text class="description-text-detail">{{serviceDetails.description}}</text>
+    </view>
+
+    <!-- Past Requests/Feedback (Placeholder) -->
+    <view class="section feedback-section-placeholder">
+      <text class="section-title">历史评价 (敬请期待)</text>
+      <text class="placeholder-text">此服务的历史评价和完成记录将在此展示。</text>
+    </view>
+
+  </scroll-view>
+
+  <!-- Action Bar -->
+  <view class="action-bar" wx:if="{{serviceDetails.status === 'active' && serviceDetails.providerUserId !== userId}}">
+    <button class="request-button" bindtap="openRequestModal">
+      <image src="/assets/icons/request_service_icon.png" class="request-icon"/>
+      请求此服务
+    </button>
+  </view>
+  <view class="action-bar" wx:elif="{{serviceDetails.providerUserId === userId}}">
+    <button class="request-button" disabled>这是您提供的服务</button>
+  </view>
+  <view class="action-bar" wx:else>
+     <button class="request-button" disabled>此服务暂不可用</button>
+  </view>
+
+  <!-- Request Service Modal -->
+  <view class="modal-overlay" wx:if="{{showRequestModal}}" bindtap="closeRequestModal">
+    <view class="modal-content" catchtap>
+      <text class="modal-title">发送服务请求</text>
+      <view class="form-group">
+        <text class="form-label">捎句话给 {{serviceDetails.providerInfo.nickname}}:</text>
+        <textarea class="form-textarea" value="{{requestMessage}}" bindinput="handleRequestMessageInput" placeholder="例如：您好，我想预约周六下午的家务服务，大概2小时。" maxlength="200" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">期望时间 (可选):</text>
+        <input class="form-input" type="text" value="{{preferredTime}}" bindinput="handlePreferredTimeInput" placeholder="例如：本周六下午3点后" />
+      </view>
+      <view class="modal-actions">
+        <button class="cancel-btn" bindtap="closeRequestModal">取消</button>
+        <button class="submit-btn" bindtap="submitServiceRequest">发送请求</button>
+      </view>
+    </view>
+  </view>
+
+</view>
+<view wx:else class="loading-state">
+  <text>加载服务详情中...</text>
+</view>

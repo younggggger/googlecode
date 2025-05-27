@@ -1,0 +1,93 @@
+<!--pages/groupbuydetail/index.wxml-->
+<view class="container" wx:if="{{groupBuyDetails}}">
+  <scroll-view scroll-y="true" class="content-scroll-view">
+    <!-- Product Image -->
+    <image class="product-main-image" src="{{groupBuyDetails.productDetails.imageUrl || '/assets/placeholder_product.png'}}" mode="aspectFill" bindtap="previewImage" data-url="{{groupBuyDetails.productDetails.imageUrl}}"></image>
+
+    <!-- Product Info Section -->
+    <view class="section product-info-section">
+      <text class="product-title">{{groupBuyDetails.title}}</text>
+      <view class="price-details">
+        <text class="current-price">¥{{groupBuyDetails.productDetails.price.toFixed(2)}}</text>
+        <text class="unit-label">/{{groupBuyDetails.productDetails.unit}}</text>
+        <text class="original-price" wx:if="{{groupBuyDetails.productDetails.originalPrice}}">原价: ¥{{groupBuyDetails.productDetails.originalPrice.toFixed(2)}}</text>
+      </view>
+      <view class="time-left-detail">
+        <image src="/assets/icons/time_icon.png" class="time-icon-detail" />
+        <text>剩余时间: {{groupBuyDetails.timeLeft}} (截止: {{groupBuyDetails.endTime.split('T')[0]}})</text>
+      </view>
+      <view class="participants-progress">
+        <progress percent="{{(groupBuyDetails.currentParticipants / groupBuyDetails.minParticipants) * 100}}" stroke-width="8" activeColor="#07c160" borderRadius="4" />
+        <text class="participants-count">{{groupBuyDetails.currentParticipants || 0}} / {{groupBuyDetails.minParticipants}} 人已参与</text>
+        <text class="participants-goal" wx:if="{{groupBuyDetails.currentParticipants < groupBuyDetails.minParticipants}}">还差 {{groupBuyDetails.minParticipants - (groupBuyDetails.currentParticipants || 0)}} 人成团!</text>
+        <text class="participants-goal success" wx:else>已成团!</text>
+      </view>
+    </view>
+
+    <!-- Initiator Info Section -->
+    <view class="section initiator-details-section">
+      <text class="section-title">团长信息</text>
+      <view class="initiator-card">
+        <image class="initiator-avatar-detail" src="{{groupBuyDetails.initiatorInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+        <view class="initiator-text-info">
+          <text class="initiator-name-detail">{{groupBuyDetails.initiatorInfo.nickname || '匿名用户'}}</text>
+          <view class="initiator-credit-detail {{groupBuyDetails.initiatorInfo.neighborhoodCreditScore >= 100 ? 'high-score' : (groupBuyDetails.initiatorInfo.neighborhoodCreditScore < 80 ? 'low-score' : '')}}">
+            <image wx:if="{{groupBuyDetails.initiatorInfo.neighborhoodCreditScore >= 110}}" src="/assets/icons/verified_badge.png" class="credit-badge-icon-detail"></image>
+            <text>邻里信用分: {{groupBuyDetails.initiatorInfo.neighborhoodCreditScore || 'N/A'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Group Buy Description Section -->
+    <view class="section description-section">
+      <text class="section-title">团购详情</text>
+      <text class="description-text">{{groupBuyDetails.description}}</text>
+    </view>
+    
+    <view class="section delivery-section" wx:if="{{groupBuyDetails.deliveryOptions}}">
+      <text class="section-title">配送/自提</text>
+      <text class="delivery-text">{{groupBuyDetails.deliveryOptions}}</text>
+    </view>
+
+    <!-- Participants Section -->
+    <view class="section participants-section">
+      <text class="section-title">参与的邻居 ({{participants.length}}人)</text>
+      <view wx:if="{{participants.length > 0}}" class="participants-list">
+        <view wx:for="{{participants}}" wx:key="participationId" class="participant-item">
+          <image class="participant-avatar" src="{{item.userInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+          <text class="participant-name">{{item.userInfo.nickname || '神秘邻居'}}</text>
+          <view class="participant-credit {{item.userInfo.neighborhoodCreditScore >= 100 ? 'high-score' : (item.userInfo.neighborhoodCreditScore < 80 ? 'low-score' : '')}}">
+             <text>信用: {{item.userInfo.neighborhoodCreditScore || 'N/A'}}</text>
+          </view>
+          <text class="participant-quantity">x{{item.quantity}}</text>
+        </view>
+      </view>
+      <view wx:else class="empty-participants">
+        <text>还没有邻居参与，快来成为第一个吧！</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Action Bar -->
+  <view class="action-bar" wx:if="{{groupBuyDetails.status === 'active'}}">
+    <view class="quantity-selector" wx:if="{{!hasJoined}}">
+      <text>数量:</text>
+      <input type="number" value="{{quantityToJoin}}" bindinput="handleQuantityChange" class="quantity-input"/>
+    </view>
+    <button wx:if="{{!hasJoined}}" class="join-button" bindtap="handleJoinGroupBuy" disabled="{{groupBuyDetails.status !== 'active'}}">
+      立即参团 (¥{{(groupBuyDetails.productDetails.price * quantityToJoin).toFixed(2)}})
+    </button>
+    <button wx:if="{{hasJoined}}" class="joined-button" disabled>您已参与</button>
+    <button class="share-button" open-type="share">
+      <image src="/assets/icons/share_icon.png" class="share-icon"/>分享
+    </button>
+  </view>
+  <view class="action-bar" wx:else>
+     <button class="join-button" disabled>团购已{{groupBuyDetails.status === 'completed' ? '结束' : (groupBuyDetails.status === 'cancelled' ? '取消' : '关闭')}}</button>
+  </view>
+
+</view>
+<view wx:else class="loading-state">
+  <text>加载团购详情中...</text>
+</view>

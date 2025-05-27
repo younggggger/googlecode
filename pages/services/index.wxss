@@ -1,7 +1,208 @@
 /* pages/services/index.wxss */
-view {
+.container {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #e9e9e9;
+}
+
+.title {
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.offer-service-btn {
+  background-color: #07c160; /* WeChat Green */
+  color: white;
+  font-size: 28rpx;
+  padding: 12rpx 25rpx;
+  border-radius: 40rpx;
+  line-height: 1.4;
+  box-shadow: 0 2rpx 6rpx rgba(7, 193, 96, 0.3);
+}
+
+.category-filter {
+  padding: 20rpx 30rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #e9e9e9;
+}
+
+.picker-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 28rpx;
+  color: #555;
+  padding: 10rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: #fdfdfd;
+}
+
+.dropdown-icon {
+  width: 24rpx;
+  height: 24rpx;
+  opacity: 0.6;
+}
+
+.service-scroll-view {
+  flex-grow: 1;
+  padding: 20rpx 20rpx 0;
+}
+
+.service-list {
+  /* Container for service items */
+}
+
+.service-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 25rpx;
+  box-shadow: 0 5rpx 15rpx rgba(0, 0, 0, 0.08);
+  padding: 25rpx;
+  transition: transform 0.2s ease-in-out;
+}
+.service-item:active {
+  transform: scale(0.98);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to top */
+  margin-bottom: 15rpx;
+}
+
+.item-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  flex-grow: 1; /* Allow title to take space */
+  margin-right: 15rpx; /* Space before price */
+  line-height: 1.4;
+}
+
+.item-price {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #e74c3c; /* Red for price */
+  white-space: nowrap; /* Prevent price from wrapping */
+}
+.item-price.free {
+  color: #27ae60; /* Green for free */
+}
+
+.item-body {
+  margin-bottom: 15rpx;
+}
+
+.item-category,
+.item-availability,
+.item-description {
+  font-size: 26rpx;
+  color: #555;
+  margin-bottom: 8rpx;
+  display: block; /* Each on new line */
+  line-height: 1.5;
+}
+
+.item-description {
+  color: #777;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit description to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.provider-info {
+  display: flex;
+  align-items: center;
+  padding-top: 15rpx;
+  border-top: 1rpx solid #f0f0f0;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.provider-avatar {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  margin-right: 12rpx;
+}
+
+.provider-name {
+  margin-right: 10rpx;
+  font-weight: 500;
+  color: #444;
+}
+
+.provider-credit {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  padding: 3rpx 10rpx;
+  border-radius: 20rpx;
+  background-color: #f0f0f0;
+  color: #555;
+}
+.provider-credit.high-score {
+  background-color: #e6fff0;
+  color: #07c160;
+}
+.provider-credit.low-score {
+  background-color: #fff0e6;
+  color: #fa5151;
+}
+.credit-badge-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 6rpx;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  flex-grow: 1;
+  padding: 40rpx;
+  text-align: center;
 }
+
+.empty-icon {
+  width: 150rpx;
+  height: 150rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-state text {
+  font-size: 28rpx;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+/* Ensure you have these assets or replace paths:
+/assets/default_avatar.png
+/assets/icons/verified_badge.png
+/assets/icons/dropdown_icon.png
+/assets/icons/empty_services_icon.png
+*/
+/*
+mkdir -p assets/icons assets/avatars
+touch assets/icons/dropdown_icon.png
+touch assets/icons/empty_services_icon.png
+touch assets/avatars/avatar_s1.png (and s2, s3, s4...)
+*/

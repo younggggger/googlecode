@@ -1,7 +1,280 @@
 /* pages/home/index.wxss */
-view {
+.container {
+  background-color: #f7f8fa; /* Light grey background for the whole page */
+  min-height: 100vh;
+}
+
+.home-scroll-view {
+  height: 100vh;
+}
+
+.section {
+  background-color: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx solid #f0f2f5; /* Lighter border */
+}
+
+.section-title {
+  font-size: 34rpx; /* Slightly larger */
+  font-weight: bold;
+  color: #303133; /* Darker grey */
+}
+
+.view-all-link {
+  font-size: 26rpx;
+  color: #007aff; /* Standard link blue */
+  font-weight: 500;
+}
+
+/* Announcements Section */
+.announcements-section {
+  /* Specific styles if any */
+}
+
+.announcement-list {
+  /* Container for announcement items */
+}
+
+.announcement-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f6f7; /* Very light separator */
+  cursor: pointer;
+}
+.announcement-item:last-child {
+  border-bottom: none;
+}
+
+.announcement-type-badge {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  font-size: 22rpx;
+  border-radius: 20rpx;
+  margin-right: 10rpx;
+  color: #fff;
+  font-weight: 500;
+}
+.announcement-type-badge.event { background-color: #e67e22; } /* Orange for Event */
+.announcement-type-badge.maintenance { background-color: #3498db; } /* Blue for Maintenance */
+.announcement-type-badge.general { background-color: #95a5a6; } /* Grey for General */
+
+
+.announcement-title {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+  display: block; /* Ensure it takes full width for truncation */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.announcement-author,
+.announcement-time {
+  font-size: 24rpx;
+  color: #888;
+  margin-right: 15rpx;
+}
+
+/* Horizontal Scroll List for Cards (Group Buys, Services) */
+.horizontal-scroll-list {
+  /* No specific styles needed here, actual scroll is on cards-scroll-view */
+}
+
+.cards-scroll-view {
+  white-space: nowrap; /* Important for horizontal scrolling */
+  padding: 10rpx 0; /* Padding for shadow visibility */
+}
+
+.card {
+  display: inline-block; /* Arrange cards horizontally */
+  width: 380rpx; /* Width of each card */
+  margin-right: 20rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 3rpx 10rpx rgba(0, 0, 0, 0.07);
+  padding: 20rpx;
+  vertical-align: top; /* Align cards to the top */
+  cursor: pointer;
+}
+.card:last-child {
+  margin-right: 0;
+}
+
+.card-image {
+  width: 100%;
+  height: 220rpx; /* Fixed height for card images */
+  border-radius: 8rpx;
+  margin-bottom: 15rpx;
+  background-color: #e9ecef; /* Placeholder bg */
+}
+
+.card-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 8rpx;
+  white-space: normal; /* Allow title to wrap */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 70rpx; /* Approx 2 lines */
+}
+
+.card-price, .card-price-home {
+  font-size: 26rpx;
+  color: #e74c3c; /* Red for price */
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.card-category-home {
+  font-size: 24rpx;
+  color: #777;
+  margin-bottom: 8rpx;
+  background-color: #f0f2f5;
+  padding: 3rpx 10rpx;
+  border-radius: 6rpx;
+  display: inline-block;
+}
+
+
+/* Initiator/Provider Info on Home Cards */
+.initiator-info-home {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #666;
+  margin-top: 10rpx;
+  margin-bottom: 8rpx;
+  border-top: 1rpx solid #f5f6f7;
+  padding-top: 8rpx;
+}
+.initiator-avatar-home {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+.initiator-name-home {
+  font-weight: 500;
+  color: #555;
+  max-width: 120rpx; /* Limit width */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.initiator-score-home {
+  margin-left: 5rpx;
+  color: #07c160; /* Green for score */
+}
+
+/* Progress Bar for Group Buys on Home */
+.progress-bar-home {
+  height: 10rpx;
+  background-color: #e9ecef;
+  border-radius: 5rpx;
+  overflow: hidden;
+  margin-bottom: 5rpx;
+}
+.progress-fill-home {
+  height: 100%;
+  background-color: #28a745; /* Bootstrap success green */
+  border-radius: 5rpx;
+}
+.participants-text-home {
+  font-size: 20rpx;
+  color: #888;
+  text-align: right;
+}
+
+
+/* Service Card Specifics */
+.service-card-icon-container {
+  width: 100%;
+  height: 120rpx; /* Height for icon area */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  border-radius: 8rpx;
+  margin-bottom: 15rpx;
 }
+.service-card-icon {
+  width: 70rpx;
+  height: 70rpx;
+}
+/* Background colors for service categories */
+.bg-housekeeping { background-color: #e9f5ff; } /* Light Blue */
+.bg-tutoring { background-color: #fff4e6; } /* Light Orange */
+.bg-petcare { background-color: #e6fffa; } /* Light Teal */
+.bg-other { background-color: #f4f4f5; } /* Light Grey */
+
+
+/* Trust Champions Section Placeholder */
+.trust-champions-section {
+  text-align: center;
+}
+.trust-champion-placeholder {
+  padding: 20rpx;
+  background-color: #f9fafc;
+  border-radius: 12rpx;
+}
+.champion-banner-icon {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.8;
+}
+.trust-champion-placeholder .placeholder-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 10rpx;
+  display: block;
+}
+.trust-champion-placeholder .sub-placeholder-text {
+  font-size: 24rpx;
+  color: #888;
+  line-height: 1.5;
+  display: block;
+}
+
+/* Empty Section Placeholder (for individual sections) */
+.empty-section-placeholder {
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 26rpx;
+  color: #aaa;
+}
+
+/* Ensure you have these assets or replace paths:
+/assets/placeholder_product.png
+/assets/default_avatar.png
+/assets/icons/service_icon_housekeeping.png
+/assets/icons/service_icon_tutoring.png
+/assets/icons/service_icon_petcare.png
+/assets/icons/service_icon_default.png (fallback)
+/assets/icons/trust_champion_banner.png
+*/
+/*
+mkdir -p assets/icons assets/products assets/avatars
+touch assets/icons/service_icon_housekeeping.png
+touch assets/icons/service_icon_tutoring.png
+touch assets/icons/service_icon_petcare.png
+touch assets/icons/service_icon_default.png
+touch assets/icons/trust_champion_banner.png
+# (Other assets from previous steps should also exist)
+*/

@@ -221,3 +221,137 @@ This document outlines the schema for the `UserProfileDetails` table in the clou
 *   `activityType` should be an enumerable list of predefined strings for consistency.
 *   `description` provides human-readable context.
 *   `relatedId` can be useful for deeper analysis or linking to specific content that caused the score change.
+
+---
+
+## GroupBuys Table Schema
+
+**Table Name:** `GroupBuys`
+
+**Fields:**
+
+| Field Name        | Data Type | Description                                     | Required | Primary Key | Foreign Key    | Notes                                                        |
+|-------------------|-----------|-------------------------------------------------|----------|-------------|----------------|--------------------------------------------------------------|
+| `groupBuyId`      | String    | Unique identifier for the group buy (auto-generated) | Yes      | Yes         |                |                                                              |
+| `title`           | String    | Title of the group buy                          | Yes      |             |                | e.g., "Fresh Organic Apples - Bulk Order"                    |
+| `description`     | String    | Detailed description of the product/service     | Yes      |             |                |                                                              |
+| `initiatorUserId` | String    | `userId` of the user who initiated the group buy | Yes      |             | `Users.userId` |                                                              |
+| `productDetails`  | Object    | Details of the product                          | Yes      |             |                | e.g., `{ name: "Organic Fuji Apples", price: 2.5 (per kg), unit: "kg", imageUrl: "url_to_image.jpg" }` |
+| `minParticipants` | Number    | Minimum number of participants needed           | Yes      |             |                |                                                              |
+| `maxParticipants` | Number    | Maximum number of participants allowed (optional) | No       |             |                |                                                              |
+| `endTime`         | Timestamp | Deadline for joining the group buy              | Yes      |             |                |                                                              |
+| `status`          | String    | Current status of the group buy                 | Yes      |             |                | e.g., 'active', 'awaiting_payment', 'completed', 'cancelled', 'failed' |
+| `createdAt`       | Timestamp | Timestamp of when the group buy was created     | Yes      |             |                | Automatically set by the database                            |
+| `updatedAt`       | Timestamp | Timestamp of when the group buy was last updated  | Yes      |             |                | Automatically updated on modification                        |
+
+**Indexes:**
+
+*   `initiatorUserId`: To list group buys initiated by a specific user.
+*   `status`: To quickly query group buys by their current status (e.g., all 'active' ones).
+*   `endTime`: To find group buys ending soon.
+
+---
+
+## GroupBuyParticipants Table Schema
+
+**Table Name:** `GroupBuyParticipants`
+
+**Fields:**
+
+| Field Name      | Data Type | Description                                       | Required | Primary Key | Foreign Key         | Notes                                                        |
+|-----------------|-----------|---------------------------------------------------|----------|-------------|---------------------|--------------------------------------------------------------|
+| `participationId`| String    | Unique identifier for the participation (auto-generated) | Yes      | Yes         |                     |                                                              |
+| `groupBuyId`    | String    | Foreign key linking to the `GroupBuys` table      | Yes      |             | `GroupBuys.groupBuyId` |                                                              |
+| `userId`        | String    | Foreign key linking to the `Users` table          | Yes      |             | `Users.userId`      | The user who joined                                          |
+| `quantity`      | Number    | Quantity of the product the user wants to buy     | Yes      |             |                     | Defaults to 1                                                |
+| `joinTime`      | Timestamp | Timestamp of when the user joined the group buy   | Yes      |             |                     | Automatically set by the database                            |
+| `status`        | String    | Status of the participant's involvement           | Yes      |             |                     | e.g., 'joined', 'paid', 'payment_failed', 'collected', 'cancelled_by_user' |
+
+**Indexes:**
+
+*   `groupBuyId`: To list all participants for a specific group buy.
+*   `userId`: To list all group buys a user has participated in.
+*   Composite index on (`groupBuyId`, `userId`): To ensure a user joins a specific group buy only once with a single active participation entry (they might cancel and rejoin, which would be a new entry or an update).
+
+---
+
+## Services Table Schema
+
+**Table Name:** `Services`
+
+**Fields:**
+
+| Field Name       | Data Type | Description                                       | Required | Primary Key | Foreign Key    | Notes                                                        |
+|------------------|-----------|---------------------------------------------------|----------|-------------|----------------|--------------------------------------------------------------|
+| `serviceId`      | String    | Unique identifier for the service (auto-generated)| Yes      | Yes         |                |                                                              |
+| `providerUserId` | String    | `userId` of the user offering the service         | Yes      |             | `Users.userId` |                                                              |
+| `title`          | String    | Title of the service offering                     | Yes      |             |                | e.g., "Weekend Lawn Mowing", "Math Tutoring (Grades 5-8)"  |
+| `description`    | String    | Detailed description of the service               | Yes      |             |                |                                                              |
+| `category`       | String    | Category of the service                           | Yes      |             |                | e.g., 'Home & Garden', 'Tutoring & Lessons', 'Pet Care', 'Tech Support', 'Manual Labor', 'Beauty & Wellness', 'Event Help' |
+| `price`          | String    | Pricing details (e.g., "20/hour", "Free", "Barter for baked goods") | Yes      |             |                |                                                              |
+| `availability`   | String    | When the service is typically available           | Yes      |             |                | e.g., "Weekends", "Evenings after 6 PM", "Flexible"          |
+| `status`         | String    | Current status of the service offering            | Yes      |             |                | e.g., 'active', 'inactive', 'paused'                       |
+| `createdAt`      | Timestamp | Timestamp of when the service was created         | Yes      |             |                | Automatically set by the database                            |
+| `updatedAt`      | Timestamp | Timestamp of when the service was last updated    | Yes      |             |                | Automatically updated on modification                        |
+
+**Indexes:**
+
+*   `providerUserId`: To list services offered by a specific user.
+*   `category`: To browse services by category.
+*   `status`: To query active services.
+
+---
+
+## ServiceRequests Table Schema
+
+**Table Name:** `ServiceRequests`
+
+**Fields:**
+
+| Field Name       | Data Type | Description                                       | Required | Primary Key | Foreign Key         | Notes                                                        |
+|------------------|-----------|---------------------------------------------------|----------|-------------|---------------------|--------------------------------------------------------------|
+| `requestId`      | String    | Unique identifier for the service request (auto-generated) | Yes      | Yes         |                     |                                                              |
+| `serviceId`      | String    | Foreign key linking to the `Services` table       | Yes      |             | `Services.serviceId`|                                                              |
+| `requesterUserId`| String    | `userId` of the user requesting the service       | Yes      |             | `Users.userId`      |                                                              |
+| `providerUserId` | String    | `userId` of the service provider (denormalized for easier queries) | Yes      |             | `Users.userId`      |                                                              |
+| `requestDetails` | String    | Specific details or message from the requester    | No       |             |                     | e.g., "Need lawn mowed this Saturday.", "My son needs help with algebra." |
+| `preferredTime`  | String    | Requester's preferred time/date for the service   | No       |             |                     |                                                              |
+| `status`         | String    | Current status of the service request             | Yes      |             |                     | e.g., 'pending_approval', 'accepted', 'in_progress', 'completed_by_provider', 'confirmed_by_requester', 'cancelled_by_requester', 'cancelled_by_provider', 'disputed' |
+| `createdAt`      | Timestamp | Timestamp of when the request was made            | Yes      |             |                     | Automatically set by the database                            |
+| `agreedDateTime` | Timestamp | The agreed date and time for service delivery     | No       |             |                     | Set after provider accepts                                   |
+| `completionDate` | Timestamp | Timestamp of when the service was marked as complete by both parties | No       |             |                     |                                                              |
+| `providerFeedback`| String   | Feedback from provider on the requester/service experience | No       |             |                     |                                                              |
+| `requesterFeedback`| String   | Feedback from requester on the service quality    | No       |             |                     |                                                              |
+
+
+**Indexes:**
+
+*   `serviceId`: To list all requests for a specific service.
+*   `requesterUserId`: To list all services requested by a user.
+*   `providerUserId`: To list all service requests directed to a provider.
+*   `status`: To query requests by their current status.
+
+---
+
+## Announcements Table Schema
+
+**Table Name:** `Announcements`
+
+**Fields:**
+
+| Field Name      | Data Type | Description                                       | Required | Primary Key | Notes                                                        |
+|-----------------|-----------|---------------------------------------------------|----------|-------------|--------------------------------------------------------------|
+| `announcementId`| String    | Unique identifier for the announcement (auto-generated) | Yes      | Yes         |                                                              |
+| `title`         | String    | Title of the announcement                         | Yes      |             |                                                              |
+| `content`       | String    | Full content of the announcement                  | Yes      |             | Can include rich text or markdown if supported by frontend   |
+| `author`        | String    | Author of the announcement                        | Yes      |             | e.g., 'Admin', '物业管理处', '社区委员会'                |
+| `type`          | String    | Type of announcement (optional for filtering)     | No       |             | e.g., 'Event', 'Maintenance', 'General', 'Warning'       |
+| `imageUrl`      | String    | Optional image URL for the announcement           | No       |             |                                                              |
+| `createdAt`     | Timestamp | Timestamp of when the announcement was published  | Yes      |             | Automatically set by the database, used for sorting        |
+| `expiresAt`     | Timestamp | Optional timestamp for when the announcement is no longer relevant | No       |             |                                                              |
+
+**Indexes:**
+
+*   `createdAt`: To sort announcements by publication date (most recent first).
+*   `type`: To filter announcements by type.
+*   `expiresAt`: To help in querying active/relevant announcements.

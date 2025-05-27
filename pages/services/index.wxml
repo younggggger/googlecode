@@ -1,4 +1,47 @@
 <!--pages/services/index.wxml-->
-<view>
-  <text>Services Page</text>
+<view class="container">
+  <view class="header">
+    <text class="title">邻里互助服务</text>
+    <button class="offer-service-btn" bindtap="navigateToOfferService">提供服务</button>
+  </view>
+
+  <view class="category-filter">
+    <picker bindchange="onCategoryChange" value="{{categories.indexOf(selectedCategory)}}" range="{{categories}}">
+      <view class="picker-content">
+        <text>分类: {{selectedCategory}}</text>
+        <image src="/assets/icons/dropdown_icon.png" class="dropdown-icon" />
+      </view>
+    </picker>
+  </view>
+
+  <scroll-view scroll-y="true" class="service-scroll-view" wx:if="{{services.length > 0}}" enable-pull-down-refresh="true" bindrefresherrefresh="onPullDownRefresh">
+    <view class="service-list">
+      <view wx:for="{{services}}" wx:key="serviceId" class="service-item" bindtap="navigateToServiceDetail" data-id="{{item.serviceId}}">
+        <view class="item-header">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-price {{item.price === 'Free' || item.price === '免费' ? 'free' : ''}}">{{item.price}}</text>
+        </view>
+        
+        <view class="item-body">
+          <text class="item-category">类别: {{item.category}}</text>
+          <text class="item-availability">时间: {{item.availability}}</text>
+          <text class="item-description">{{item.description}}</text>
+        </view>
+
+        <view class="provider-info">
+          <image class="provider-avatar" src="{{item.providerInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+          <text class="provider-name">{{item.providerInfo.nickname || '匿名用户'}}</text>
+          <view class="provider-credit {{item.providerInfo.neighborhoodCreditScore >= 100 ? 'high-score' : (item.providerInfo.neighborhoodCreditScore < 80 ? 'low-score' : '')}}">
+            <image wx:if="{{item.providerInfo.neighborhoodCreditScore >= 110}}" src="/assets/icons/verified_badge.png" class="credit-badge-icon"></image>
+            <text>信用分: {{item.providerInfo.neighborhoodCreditScore || 'N/A'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:else class="empty-state">
+    <image src="/assets/icons/empty_services_icon.png" class="empty-icon" />
+    <text>当前分类下暂无服务，看看其他分类或稍后再来吧！</text>
+  </view>
 </view>

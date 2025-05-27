@@ -1,4 +1,94 @@
 <!--pages/home/index.wxml-->
-<view>
-  <text>Home Page</text>
+<view class="container">
+  <scroll-view scroll-y="true" class="home-scroll-view" enable-pull-down-refresh="true" bindrefresherrefresh="onPullDownRefresh">
+    <!-- Community Announcements Section -->
+    <view class="section announcements-section">
+      <view class="section-header">
+        <text class="section-title">社区公告</text>
+        <!-- <text class="view-all-link">查看全部</text> -->
+      </view>
+      <view wx:if="{{announcements.length > 0}}" class="announcement-list">
+        <view wx:for="{{announcements}}" wx:key="announcementId" class="announcement-item" bindtap="navigateToAnnouncementDetail" data-id="{{item.announcementId}}">
+          <view class="announcement-type-badge {{item.type === 'Event' ? 'event' : (item.type === 'Maintenance' ? 'maintenance' : 'general')}}">{{item.type || '通知'}}</view>
+          <text class="announcement-title">{{item.title}}</text>
+          <text class="announcement-author">发布者: {{item.author}}</text>
+          <text class="announcement-time">{{item.createdAt.split(' ')[0]}}</text>
+        </view>
+      </view>
+      <view wx:else class="empty-section-placeholder">
+        <text>暂无最新公告</text>
+      </view>
+    </view>
+
+    <!-- Highlighted Group Buys Section -->
+    <view class="section group-buys-section">
+      <view class="section-header">
+        <text class="section-title">热门团购</text>
+        <text class="view-all-link" bindtap="navigateToAllGroupBuys">查看全部 &gt;</text>
+      </view>
+      <view wx:if="{{highlightedGroupBuys.length > 0}}" class="horizontal-scroll-list">
+        <scroll-view scroll-x="true" class="cards-scroll-view">
+          <view wx:for="{{highlightedGroupBuys}}" wx:key="groupBuyId" class="group-buy-card card" bindtap="navigateToGroupBuyDetail" data-id="{{item.groupBuyId}}">
+            <image class="card-image" src="{{item.productDetails.imageUrl || '/assets/placeholder_product.png'}}" mode="aspectFill"></image>
+            <text class="card-title">{{item.productDetails.name}}</text>
+            <text class="card-price">¥{{item.productDetails.price.toFixed(2)}} /{{item.productDetails.unit}}</text>
+            <view class="initiator-info-home">
+              <image class="initiator-avatar-home" src="{{item.initiatorInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+              <text class="initiator-name-home">{{item.initiatorInfo.nickname}}</text>
+              <text class="initiator-score-home">(信用: {{item.initiatorInfo.neighborhoodCreditScore}})</text>
+            </view>
+             <view class="progress-bar-home">
+                <view class="progress-fill-home" style="width: {{(item.currentParticipants / item.minParticipants) * 100}}%;"></view>
+            </view>
+            <text class="participants-text-home">{{item.currentParticipants}}/{{item.minParticipants}}人</text>
+          </view>
+        </scroll-view>
+      </view>
+      <view wx:else class="empty-section-placeholder">
+        <text>暂无热门团购</text>
+      </view>
+    </view>
+
+    <!-- Highlighted Services Section -->
+    <view class="section services-section">
+      <view class="section-header">
+        <text class="section-title">精选服务</text>
+        <text class="view-all-link" bindtap="navigateToAllServices">查看全部 &gt;</text>
+      </view>
+      <view wx:if="{{highlightedServices.length > 0}}" class="horizontal-scroll-list">
+         <scroll-view scroll-x="true" class="cards-scroll-view">
+          <view wx:for="{{highlightedServices}}" wx:key="serviceId" class="service-card card" bindtap="navigateToServiceDetail" data-id="{{item.serviceId}}">
+            <view class="service-card-icon-container {{item.category === '家政服务' ? 'bg-housekeeping' : (item.category === '教育辅导' ? 'bg-tutoring' : (item.category === '宠物照看' ? 'bg-petcare' : 'bg-other'))}}">
+                 <image class="service-card-icon" src="/assets/icons/service_icon_{{item.category === '家政服务' ? 'housekeeping' : (item.category === '教育辅导' ? 'tutoring' : (item.category === '宠物照看' ? 'petcare' : 'default'))}}.png" mode="aspectFit"></image>
+            </view>
+            <text class="card-title">{{item.title}}</text>
+            <text class="card-category-home">{{item.category}}</text>
+            <view class="initiator-info-home">
+              <image class="initiator-avatar-home" src="{{item.providerInfo.avatarUrl || '/assets/default_avatar.png'}}" mode="aspectFill"></image>
+              <text class="initiator-name-home">{{item.providerInfo.nickname}}</text>
+              <text class="initiator-score-home">(信用: {{item.providerInfo.neighborhoodCreditScore}})</text>
+            </view>
+            <text class="card-price-home">{{item.price}}</text>
+          </view>
+        </scroll-view>
+      </view>
+      <view wx:else class="empty-section-placeholder">
+        <text>暂无精选服务</text>
+      </view>
+    </view>
+
+    <!-- Trust Champions Section (Placeholder) -->
+    <view class="section trust-champions-section">
+      <view class="section-header">
+        <text class="section-title">邻里之星</text>
+        <!-- <text class="view-all-link">查看榜单</text> -->
+      </view>
+      <view class="trust-champion-placeholder">
+        <image src="/assets/icons/trust_champion_banner.png" class="champion-banner-icon"/>
+        <text class="placeholder-text">邻里之星虚位以待！积极参与社区活动，互帮互助，您也能成为大家信赖的伙伴！</text>
+        <text class="sub-placeholder-text">(例如：成功发起多次团购、提供优质服务并获得好评、积极参与社区建设等)</text>
+      </view>
+    </view>
+
+  </scroll-view>
 </view>

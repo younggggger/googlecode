@@ -1,7 +1,231 @@
 /* pages/groupbuy/index.wxss */
-view {
+.container {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f7f7;
+  padding-bottom: 20rpx; /* Space for last item */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 30rpx; /* Increased padding */
+  background-color: #fff;
+  border-bottom: 1rpx solid #e9e9e9;
+}
+
+.title {
+  font-size: 38rpx; /* Slightly larger title */
+  font-weight: bold;
+  color: #333;
+}
+
+.create-group-buy-btn {
+  background-color: #07c160; /* WeChat Green */
+  color: white;
+  font-size: 28rpx;
+  padding: 12rpx 25rpx; /* Adjusted padding */
+  border-radius: 40rpx; /* More rounded */
+  line-height: 1.4;
+  box-shadow: 0 2rpx 6rpx rgba(7, 193, 96, 0.3);
+}
+
+.group-buy-scroll-view {
+  flex-grow: 1;
+  padding: 20rpx 20rpx 0; /* Add padding for the list */
+}
+
+.group-buy-list {
+  /* No specific styles needed for the list container itself */
+}
+
+.group-buy-item {
+  background-color: #fff;
+  border-radius: 16rpx; /* More rounded corners */
+  margin-bottom: 25rpx; /* Increased spacing */
+  box-shadow: 0 5rpx 15rpx rgba(0, 0, 0, 0.08); /* Softer shadow */
+  display: flex; /* For image and content side-by-side */
+  padding: 20rpx;
+  overflow: hidden; /* Ensure children don't overflow rounded corners */
+  transition: transform 0.2s ease-in-out;
+}
+.group-buy-item:active {
+  transform: scale(0.98); /* Click effect */
+}
+
+.product-image {
+  width: 200rpx; /* Fixed width for product image */
+  height: 200rpx; /* Fixed height */
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0; /* Prevent image from shrinking */
+  background-color: #e9e9e9; /* Placeholder for image loading */
+}
+
+.item-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute content vertically */
+  overflow: hidden; /* Prevent text overflow issues */
+}
+
+.item-title {
+  font-size: 30rpx; /* Slightly larger */
+  font-weight: 500; /* Medium weight */
+  color: #333;
+  margin-bottom: 8rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* Initiator Info */
+.initiator-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.initiator-avatar {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+
+.initiator-name {
+  margin-right: 10rpx;
+  max-width: 150rpx; /* Prevent long names from breaking layout */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.initiator-credit {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx; /* Smaller font for credit score */
+  padding: 3rpx 8rpx;
+  border-radius: 20rpx;
+  background-color: #f0f0f0;
+  color: #555;
+}
+.initiator-credit.high-score {
+  background-color: #e6fff0; /* Light green for high scores */
+  color: #07c160;
+}
+.initiator-credit.low-score {
+  background-color: #fff0e6; /* Light orange/red for low scores */
+  color: #fa5151;
+}
+.credit-badge-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 5rpx;
+}
+
+
+/* Price Info */
+.price-info {
+  margin-bottom: 10rpx;
+  display: flex;
+  align-items: baseline; /* Align price and unit */
+}
+
+.current-price {
+  font-size: 34rpx; /* Prominent price */
+  font-weight: bold;
+  color: #ff5050; /* Red for price */
+  margin-right: 5rpx;
+}
+
+.unit-label {
+  font-size: 24rpx;
+  color: #888;
+}
+
+/* Progress Info */
+.progress-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.progress-info progress {
+  flex-grow: 1;
+  margin-right: 15rpx;
+}
+
+.participants-text {
+  font-size: 22rpx;
+  color: #888;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Time Left */
+.time-left {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #888;
+}
+
+.time-icon {
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 8rpx;
+  opacity: 0.7;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  flex-grow: 1;
+  padding: 40rpx;
+  text-align: center;
 }
+
+.empty-icon {
+  width: 150rpx;
+  height: 150rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-state text {
+  font-size: 28rpx;
+  color: #aaa;
+}
+
+/* Ensure you have these assets or replace paths:
+/assets/placeholder_product.png
+/assets/default_avatar.png
+/assets/icons/verified_badge.png
+/assets/icons/time_icon.png
+/assets/icons/empty_box_icon.png
+*/
+
+/* Example for product image placeholders if not loaded */
+/* Make sure actual product images are available at paths like /assets/products/apples.jpg */
+/* You might need to create these dummy assets for testing.
+mkdir -p assets/products assets/icons
+touch assets/products/apples.jpg
+touch assets/products/bedding.jpg
+touch assets/products/nuts.jpg
+touch assets/products/cookies.jpg
+touch assets/placeholder_product.png
+touch assets/icons/verified_badge.png
+touch assets/icons/time_icon.png
+touch assets/icons/empty_box_icon.png
+*/

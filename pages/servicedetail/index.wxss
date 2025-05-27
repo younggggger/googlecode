@@ -1,0 +1,281 @@
+/* pages/servicedetail/index.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.content-scroll-view {
+  flex-grow: 1;
+  padding-bottom: 140rpx; /* Space for the fixed action bar */
+}
+
+.section {
+  background-color: #fff;
+  margin-top: 20rpx;
+  padding: 25rpx 30rpx;
+}
+.section:first-child { /* Service Header Section */
+  margin-top: 0;
+  padding-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+/* Service Header Section */
+.service-header-section .service-title-detail {
+  font-size: 40rpx; /* Larger title */
+  font-weight: bold;
+  color: #2c3e50; /* Dark blue-grey */
+  margin-bottom: 15rpx;
+  line-height: 1.4;
+}
+
+.service-meta-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+.service-price-detail {
+  font-size: 34rpx;
+  color: #e74c3c; /* Red price */
+  font-weight: bold;
+}
+.service-price-detail.free {
+  color: #27ae60; /* Green for free */
+}
+.service-category-detail {
+  font-size: 28rpx;
+  color: #7f8c8d; /* Grey */
+  background-color: #ecf0f1; /* Light grey bg */
+  padding: 5rpx 15rpx;
+  border-radius: 20rpx;
+}
+
+.service-availability-detail {
+  font-size: 28rpx;
+  color: #34495e; /* Darker blue-grey */
+  background-color: #f9f9f9;
+  padding: 10rpx;
+  border-radius: 8rpx;
+  display: inline-block; /* So background fits content */
+}
+
+/* Provider Details Section */
+.provider-card {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #f9f9f9;
+  border-radius: 12rpx;
+  margin-bottom: 15rpx; /* Space before bio */
+}
+.provider-avatar-detail {
+  width: 100rpx; /* Larger avatar */
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 25rpx;
+  border: 3rpx solid #eee;
+}
+.provider-text-info {
+  display: flex;
+  flex-direction: column;
+}
+.provider-name-detail {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+.provider-credit-detail {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx; /* Slightly larger */
+  color: #555;
+}
+.provider-credit-detail.high-score { color: #07c160; }
+.provider-credit-detail.low-score { color: #fa5151; }
+.credit-badge-icon-detail {
+  width: 30rpx; /* Larger badge */
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+
+.provider-bio {
+  padding: 15rpx;
+  background-color: #fdfdfd;
+  border: 1rpx dashed #e0e0e0;
+  border-radius: 8rpx;
+}
+.provider-bio .bio-text {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Description Section */
+.description-text-detail {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.7;
+  white-space: pre-wrap; /* Preserve line breaks */
+}
+
+/* Feedback Placeholder Section */
+.feedback-section-placeholder .placeholder-text {
+  font-size: 26rpx;
+  color: #999;
+  text-align: center;
+  padding: 20rpx 0;
+  line-height: 1.6;
+}
+
+/* Action Bar */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx; /* More padding */
+  background-color: #fff;
+  box-shadow: 0 -3rpx 12rpx rgba(0,0,0,0.1); /* Stronger shadow */
+  z-index: 100;
+  display: flex; /* Ensure button takes full width if needed */
+}
+
+.request-button {
+  flex-grow: 1; /* Make button take full width */
+  background-color: #07c160; /* Green */
+  color: white;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 22rpx; /* Taller button */
+  border-radius: 12rpx; /* More rounded */
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.request-button:disabled {
+  background-color: #bdc3c7; /* Grey for disabled */
+  color: #7f8c8d;
+}
+.request-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 12rpx;
+}
+
+
+/* Request Service Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40rpx;
+  border-radius: 16rpx;
+  width: 85%;
+  max-width: 650rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 25rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #555;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 18rpx; /* Increased padding */
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  height: 180rpx; /* Adjust as needed */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30rpx;
+}
+
+.modal-actions button {
+  flex-grow: 1;
+  font-size: 30rpx;
+  padding: 18rpx 0; /* Increased padding */
+  border-radius: 8rpx;
+  line-height: 1.5;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  margin-right: 20rpx;
+}
+
+.submit-btn {
+  background-color: #07c160;
+  color: white;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 30rpx;
+  color: #888;
+}
+
+/* Ensure you have these assets or replace paths:
+/assets/default_avatar.png
+/assets/icons/verified_badge.png
+/assets/icons/request_service_icon.png
+/assets/avatars/avatar_s1.png (and s2, s3, s4...)
+*/
+/*
+mkdir -p assets/icons assets/avatars
+touch assets/icons/request_service_icon.png
+*/
