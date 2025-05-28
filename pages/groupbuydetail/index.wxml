@@ -87,6 +87,10 @@
      <button class="join-button" disabled>团购已{{groupBuyDetails.status === 'completed' ? '结束' : (groupBuyDetails.status === 'cancelled' ? '取消' : '关闭')}}</button>
   </view>
 
+  <!-- Report Issue Placeholder -->
+  <view class="report-issue-section">
+    <button class="report-issue-btn" bindtap="handleReportIssue">报告问题</button>
+  </view>
 </view>
 <view wx:else class="loading-state">
   <text>加载团购详情中...</text>

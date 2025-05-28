@@ -57,6 +57,11 @@
      <button class="request-button" disabled>此服务暂不可用</button>
   </view>
 
+  <!-- Report Issue Placeholder -->
+  <view class="report-issue-section">
+    <button class="report-issue-btn" bindtap="handleReportIssue">报告问题</button>
+  </view>
+
   <!-- Request Service Modal -->
   <view class="modal-overlay" wx:if="{{showRequestModal}}" bindtap="closeRequestModal">
     <view class="modal-content" catchtap>

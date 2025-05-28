@@ -269,6 +269,31 @@
   color: #888;
 }
 
+/* Report Issue Section/Button (Shared Style) */
+.report-issue-section {
+  margin-top: 20rpx; /* Space above the button */
+  padding: 0 30rpx 20rpx; /* Consistent padding with action bar */
+  background-color: #fff; /* Match action bar or page bg */
+  /* This could also be placed directly in the .content-scroll-view if it's not fixed */
+}
+
+.report-issue-btn {
+  background-color: #f39c12; /* Warning color - orange */
+  color: white;
+  font-size: 28rpx;
+  padding: 18rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  width: 100%; /* Make it full width */
+  line-height: 1.5;
+  border: none;
+}
+.report-issue-btn:disabled {
+  background-color: #f5d76e; /* Lighter orange for disabled */
+  color: #a07e3b;
+}
+
+
 /* Ensure you have these assets or replace paths:
 /assets/default_avatar.png
 /assets/icons/verified_badge.png

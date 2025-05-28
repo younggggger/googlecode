@@ -9,14 +9,27 @@
   min-height: 100vh;
 }
 
+/* Common card style for sections below userinfo */
+.profile-section-card {
+  width: 100%;
+  max-width: 700rpx; /* Consistent max width */
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+  margin-bottom: 30rpx; /* Space between cards */
+}
+
+
 .userinfo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20rpx; /* Reduced margin-top */
+  margin-top: 0; /* Removed top margin, using container padding now */
+  /* Removed individual card styling from userinfo, will apply .profile-section-card if needed or keep separate */
   background-color: #fff;
-  width: 100%; /* Make userinfo card take full width */
-  max-width: 700rpx; /* Optional: constrain max width */
+  width: 100%; 
+  max-width: 700rpx; 
   padding: 30rpx;
   border-radius: 16rpx;
   box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
@@ -143,22 +156,33 @@
 
 
 /* Trust History Section */
-.trust-history-section {
-  width: 100%;
-  max-width: 700rpx; /* Optional: constrain max width */
-  background-color: #fff;
-  padding: 30rpx;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+.trust-history-section { /* Now uses .profile-section-card */
+  /* Specific styles for trust history if any, otherwise inherits from .profile-section-card */
+}
+
+.section-header { /* Header for sections like Endorsements */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+ /* padding-bottom: 15rpx; */ /* Already in section-title */
+ /* border-bottom: 1rpx solid #f0f0f0; */ /* Already in section-title */
 }
 
 .section-title {
   font-size: 32rpx;
   font-weight: bold;
   color: #333;
-  margin-bottom: 20rpx;
-  text-align: center;
+  margin-bottom: 20rpx; /* Keep this for spacing if no header */
+  /* text-align: center; */ /* Centering is better if section title is alone */
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  flex-grow: 1; /* Allow title to take space if in a header */
 }
+.trust-history-section .section-title { /* Ensure title is centered if it's the only header item */
+    text-align: center;
+}
+
 
 .trust-history-list {
   /* Styles if you had actual list items */
@@ -181,7 +205,7 @@
 .log-timestamp { color: #999; font-size: 24rpx; }
 
 
-.empty-history-placeholder {
+.empty-history-placeholder, .empty-placeholder { /* Standardized class */
   font-size: 26rpx;
   color: #888;
   text-align: center;
@@ -283,4 +307,102 @@
 .submit-btn {
   background-color: #07c160;
   color: white;
+}
+
+/* Endorsements Section */
+.endorsements-section { /* Uses .profile-section-card */
+  /* Specific styles for endorsements if any */
+}
+
+.endorse-user-btn {
+  background-color: #3498db; /* Blue for endorse */
+  color: white;
+  font-size: 26rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  line-height: 1.4;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+.endorse-user-btn:disabled {
+  background-color: #bdc3c7;
+  color: #7f8c8d;
+}
+.btn-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 8rpx;
+}
+
+
+.endorsements-list {
+  margin-top: 10rpx;
+}
+
+.endorsement-item {
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 15rpx;
+  border: 1rpx solid #eee;
+}
+.endorsement-item:last-child {
+  margin-bottom: 0;
+}
+
+.endorsement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.endorser-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.endorsement-tag {
+  font-size: 22rpx;
+  background-color: #07c160; /* WeChat Green for tag */
+  color: white;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.endorsement-comment {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+  display: block; /* Ensure it takes block space */
+  font-style: italic;
+}
+
+.endorsement-date {
+  font-size: 22rpx;
+  color: #999;
+  text-align: right;
+  display: block;
+}
+
+.empty-endorsements-placeholder { /* Renamed for clarity */
+  font-size: 26rpx;
+  color: #888;
+  text-align: center;
+  padding: 30rpx 10rpx;
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  line-height: 1.6;
+}
+
+/* Endorse User Modal: Uses same .modal-overlay, .modal-content, .modal-title, .form-group, .form-label, .form-input, .form-textarea, .modal-actions, .cancel-btn, .submit-btn styles as Edit Profile Modal */
+/* Add specific style for picker if needed */
+.picker.form-input { /* To make picker look like an input */
+  display: flex;
+  align-items: center; /* Vertically center text in picker */
+  height: auto; /* Override fixed height if any from .form-input for picker text */
+  line-height: normal; /* Override fixed line-height if any */
 }

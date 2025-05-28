@@ -14,7 +14,21 @@ Page({
     userProfileDetails: {
       bio: '',
       interests: '' // Example, can add more
-    }
+    },
+    endorsementsReceived: [],
+    showEndorsementModal: false,
+    endorsementTypes: ['乐于助人', '诚信可靠', '优秀团长', '技能分享达人', '友善邻居'],
+    selectedEndorsementType: '',
+    endorsementComment: '',
+    // For mocking: assume we are viewing another user's profile for endorsement
+    // In a real app, this would be the userId of the profile being viewed.
+    // For now, we'll use a mock ID if the user wants to "endorse" someone.
+    // If this page is *only* for the logged-in user's profile, then endorsing others
+    // would happen on a different "view user profile" page.
+    // For this subtask, we'll add the UI to *this* profile page,
+    // and simulate that the "endorse" button is for endorsing *this* user by *another* (mocked) user.
+    // This is a bit artificial but allows implementing the UI elements.
+    profileBeingViewedUserId: 'mockUserBeingViewedId' // Assume this is the ID of the user whose profile is shown
   },
 
   onLoad: function () {
@@ -79,8 +93,9 @@ Page({
         // Here you would typically send the userInfo to your backend to store in the database
         // and then fetch/update the neighborhoodCreditScore.
         console.log("User profile fetched:", res.userInfo);
-        this.fetchNeighborhoodCreditScore(updatedUserInfo.nickName); // Pass a user identifier
-        this.fetchTrustHistory(updatedUserInfo.nickName); // Fetch trust history
+        this.fetchNeighborhoodCreditScore(updatedUserInfo.nickName);
+        this.fetchTrustHistory(updatedUserInfo.nickName);
+        this.fetchEndorsementsReceived(this.data.profileBeingViewedUserId); // Fetch endorsements for the currently viewed profile
       },
       fail: (err) => {
         console.error("getUserProfile failed:", err);
@@ -126,20 +141,43 @@ Page({
     ];
     // If this.data.trustHistory is empty, we show the placeholder text in WXML
     this.setData({ trustHistory: mockHistory });
+    // Also attempt to load endorsements if user info was cached
+    if(this.data.hasUserInfo){
+        this.fetchEndorsementsReceived(this.data.profileBeingViewedUserId);
+    }
   },
   
-  addTrustLogEntry(activityType, pointsChange, description) {
+  fetchEndorsementsReceived: function(userId) {
+    console.log("Simulating fetching endorsements for user:", userId);
+    // In a real app, fetch from UserEndorsements table where endorseeUserId === userId
+    const mockEndorsements = [
+      { endorsementId: 'end001', endorserUserId: 'userFriendA', endorserNickname: '热心邻居小王', endorsementType: '乐于助人', comment: '上次帮我搬了重物，非常感谢！', createdAt: '2023-12-01' },
+      { endorsementId: 'end002', endorserUserId: 'userFriendB', endorserNickname: '团购买家小李', endorsementType: '优秀团长', comment: '组织的团购很棒，物美价廉。', createdAt: '2023-11-15' },
+      { endorsementId: 'end003', endorserUserId: 'userFriendC', endorserNickname: '社区常客老张', endorsementType: '友善邻居', comment: '', createdAt: '2023-10-20' },
+    ];
+    // For this mock, we always show these for 'mockUserBeingViewedId'.
+    // If this.data.userInfo.userId (logged-in user) === userId, then these are their own endorsements.
+    if (userId === this.data.profileBeingViewedUserId) {
+        this.setData({ endorsementsReceived: mockEndorsements });
+    } else {
+        this.setData({ endorsementsReceived: [] }); // Clear if not viewing the "target" profile
+    }
+  },
+
+  addTrustLogEntry(activityType, pointsChange, description, relatedUserId = null) {
     // This is a mock function. In a real app, this would be a backend call.
     const newLog = {
       logId: 'log' + Date.now(),
+      userId: this.data.userId, // The user performing the action or affected
       activityType: activityType,
       pointsChange: pointsChange,
       description: description,
-      timestamp: new Date().toLocaleDateString()
+      timestamp: new Date().toLocaleDateString(),
+      relatedId: relatedUserId || this.data.profileBeingViewedUserId // context-dependent related ID
     };
     console.log("Mock TrustLogEntry:", newLog);
-    // For now, we don't directly add to this.data.trustHistory to keep UI simple with placeholder
-    // but in a real scenario, after backend update, trustHistory would be refetched or updated.
+    // Potentially add to this.data.trustHistory if it's for the current user and page needs to update
+    // For now, trust history is just a placeholder.
   },
 
   // --- Profile Editing Modal ---
@@ -200,9 +238,85 @@ Page({
       wx.setStorageSync('userInfo', updatedUserInfo);
       this.fetchNeighborhoodCreditScore(updatedUserInfo.nickName);
       this.fetchTrustHistory(updatedUserInfo.nickName);
+      this.fetchEndorsementsReceived(this.data.profileBeingViewedUserId);
     } else {
       console.warn("getUserInfo (deprecated) failed or user denied.");
       // Handle case where user denies permission with the old API
     }
+  },
+
+  // --- Endorsement Modal ---
+  openEndorseModal: function() {
+    // Prevent endorsing oneself - in a real app, this button might only appear on others' profiles.
+    // For this mock, if profileBeingViewedUserId is the logged-in user, disable.
+    if (this.data.userId === this.data.profileBeingViewedUserId && this.data.hasUserInfo) {
+        // This logic is a bit mixed up due to the mock setup.
+        // Ideally, you wouldn't show "Endorse [This User's Name]" on their own profile page.
+        // Or, if it's a generic "Give an Endorsement" button, it would require searching for a user.
+        // For now, we'll allow opening it but it will "endorse" profileBeingViewedUserId.
+        // wx.showToast({ title: '您不能为自己背书哦', icon: 'none' });
+        // return;
+    }
+    if (!this.data.hasUserInfo) {
+        wx.showToast({ title: '请先登录', icon: 'none'});
+        return;
+    }
+    this.setData({ showEndorsementModal: true, selectedEndorsementType: '', endorsementComment: '' });
+  },
+
+  closeEndorseModal: function() {
+    this.setData({ showEndorsementModal: false });
+  },
+
+  onEndorsementTypeChange: function(e) {
+    this.setData({ selectedEndorsementType: this.data.endorsementTypes[e.detail.value] });
+  },
+
+  handleEndorsementCommentInput: function(e) {
+    this.setData({ endorsementComment: e.detail.value });
+  },
+
+  submitEndorsement: function() {
+    if (!this.data.selectedEndorsementType) {
+      wx.showToast({ title: '请选择背书类型', icon: 'none' });
+      return;
+    }
+    wx.showLoading({ title: '提交中...' });
+    // Simulate API call to create UserEndorsement
+    setTimeout(() => {
+      const endorsementData = {
+        endorsementId: 'end' + Date.now(),
+        endorserUserId: this.data.userId, // Current logged-in user
+        endorseeUserId: this.data.profileBeingViewedUserId, // The user whose profile is being viewed
+        endorsementType: this.data.selectedEndorsementType,
+        comment: this.data.endorsementComment,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+      console.log("Mock Endorsement Created:", endorsementData);
+
+      // Add to local list for immediate UI update (if viewing own profile and someone endorsed you)
+      // Or, if this is for endorsing others, this update isn't for the current page's displayed list.
+      // For this mock, if we are "viewing" the target user, we add it to their list.
+      if (this.data.profileBeingViewedUserId === endorsementData.endorseeUserId) {
+          const newEndorsementForDisplay = {
+              ...endorsementData,
+              endorserNickname: this.data.userInfo.nickName // Current user's nickname
+          };
+          this.setData({
+            endorsementsReceived: [newEndorsementForDisplay, ...this.data.endorsementsReceived]
+          });
+      }
+      
+      // Log trust activities
+      this.addTrustLogEntry('ENDORSEMENT_GIVEN', 1, `为你赞赏了 ${this.data.usersData[this.data.profileBeingViewedUserId]?.nickname || '用户'} (${this.data.selectedEndorsementType})`, this.data.profileBeingViewedUserId);
+      // The endorsed user would get a separate log on their side.
+      // This is a conceptual point, actual point change for ENDORSEMENT_RECEIVED would be backend.
+      // this.addTrustLogEntry('ENDORSEMENT_RECEIVED', 2, `收到来自 ${this.data.userInfo.nickName} 的赞赏 (${this.data.selectedEndorsementType})`, this.data.profileBeingViewedUserId);
+
+
+      wx.hideLoading();
+      this.setData({ showEndorsementModal: false });
+      wx.showToast({ title: '感谢您的赞赏!', icon: 'success' });
+    }, 1000);
   }
 });

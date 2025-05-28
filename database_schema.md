@@ -355,3 +355,55 @@ This document outlines the schema for the `UserProfileDetails` table in the clou
 *   `createdAt`: To sort announcements by publication date (most recent first).
 *   `type`: To filter announcements by type.
 *   `expiresAt`: To help in querying active/relevant announcements.
+
+---
+
+## UserEndorsements Table Schema
+
+**Table Name:** `UserEndorsements`
+
+**Fields:**
+
+| Field Name        | Data Type | Description                                       | Required | Primary Key | Foreign Key (Table.Field) | Notes                                                        |
+|-------------------|-----------|---------------------------------------------------|----------|-------------|---------------------------|--------------------------------------------------------------|
+| `endorsementId`   | String    | Unique identifier for the endorsement (auto-generated) | Yes      | Yes         |                           |                                                              |
+| `endorserUserId`  | String    | `userId` of the user giving the endorsement       | Yes      |             | `Users.userId`            |                                                              |
+| `endorseeUserId`  | String    | `userId` of the user receiving the endorsement    | Yes      |             | `Users.userId`            |                                                              |
+| `endorsementType` | String    | Type of endorsement                               | Yes      |             |                           | e.g., 'RELIABLE_GROUP_BUYER', 'HELPFUL_NEIGHBOR', 'SKILLED_SERVICE_PROVIDER', 'TRUSTWORTHY_CONTACT' |
+| `comment`         | String    | Optional text comment with the endorsement        | No       |             |                           | Max 200 characters                                           |
+| `createdAt`       | Timestamp | Timestamp of when the endorsement was given       | Yes      |             |                           | Automatically set by the database                            |
+
+**Indexes:**
+
+*   `endorseeUserId`: To list all endorsements received by a user.
+*   `endorserUserId`: To list all endorsements given by a user.
+*   Composite index on (`endorserUserId`, `endorseeUserId`, `endorsementType`): To prevent duplicate endorsements of the same type from the same user.
+
+---
+
+## Disputes Table Schema
+
+**Table Name:** `Disputes`
+
+**Fields:**
+
+| Field Name           | Data Type | Description                                       | Required | Primary Key | Foreign Key (Table.Field) | Notes                                                        |
+|----------------------|-----------|---------------------------------------------------|----------|-------------|---------------------------|--------------------------------------------------------------|
+| `disputeId`          | String    | Unique identifier for the dispute (auto-generated)| Yes      | Yes         |                           |                                                              |
+| `reporterUserId`     | String    | `userId` of the user reporting the issue          | Yes      |             | `Users.userId`            |                                                              |
+| `reportedUserId`     | String    | `userId` of the user being reported (optional, if the issue is about an item not a user) | No       |             | `Users.userId`            |                                                              |
+| `relatedItemId`      | String    | ID of the item related to the dispute             | Yes      |             |                           | e.g., `groupBuyId`, `serviceRequestId`, `postId`, `commentId` |
+| `itemType`           | String    | Type of the related item                          | Yes      |             |                           | e.g., 'GROUP_BUY', 'SERVICE_REQUEST', 'POST', 'COMMENT'      |
+| `reason`             | String    | Predefined reason for the dispute                 | Yes      |             |                           | e.g., 'ITEM_NOT_AS_DESCRIBED', 'SERVICE_NOT_RENDERED', 'NON_PAYMENT', 'HARASSMENT', 'SPAM' |
+| `details`            | String    | Detailed description of the issue                 | Yes      |             |                           |                                                              |
+| `status`             | String    | Current status of the dispute                     | Yes      |             |                           | e.g., 'OPEN', 'UNDER_REVIEW', 'AWAITING_USER_RESPONSE', 'RESOLVED_FAVOR_REPORTER', 'RESOLVED_FAVOR_REPORTED', 'CLOSED_INVALID', 'CLOSED_WITHDRAWN' |
+| `resolutionComments` | String    | Comments from admin or mediator during resolution | No       |             |                           |                                                              |
+| `createdAt`          | Timestamp | Timestamp of when the dispute was filed           | Yes      |             |                           | Automatically set by the database                            |
+| `resolvedAt`         | Timestamp | Timestamp of when the dispute was resolved/closed | No       |             |                           |                                                              |
+
+**Indexes:**
+
+*   `reporterUserId`: To list disputes filed by a user.
+*   `reportedUserId`: To list disputes against a user.
+*   `status`: To query disputes by their current status.
+*   `relatedItemId`, `itemType`: To find disputes related to a specific item.

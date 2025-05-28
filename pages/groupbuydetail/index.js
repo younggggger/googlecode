@@ -235,5 +235,16 @@ Page({
       title: '邻里团购，实惠多多！',
       path: '/pages/groupbuy/index'
     };
+  },
+
+  handleReportIssue: function() {
+    // In a real app, this would navigate to a dispute submission page or open a detailed modal.
+    // For this subtask, it's a placeholder.
+    wx.showModal({
+      title: '报告问题',
+      content: '邻里互助纠纷处理功能正在开发中。如遇紧急情况或严重问题，请联系管理员微信：community_admin (示例)。',
+      showCancel: false,
+      confirmText: '知道了'
+    });
   }
 });

@@ -18,7 +18,6 @@
           <text class="credit-score-value {{creditScoreDescriptor ? 'score-' + creditScoreDescriptor : ''}}">{{neighborhoodCreditScore !== null ? neighborhoodCreditScore : '--'}}</text>
           <text class="credit-score-descriptor" wx:if="{{creditScoreDescriptor}}">({{creditScoreDescriptor}})</text>
         </view>
-        <!-- Simple progress bar concept (can be enhanced with actual progress element or more complex SVG) -->
         <view class="progress-bar-container" wx:if="{{neighborhoodCreditScore !== null}}">
           <view class="progress-bar-track">
             <view class="progress-bar-fill" style="width: {{neighborhoodCreditScore > 120 ? 100 : (neighborhoodCreditScore < 30 ? 5 : neighborhoodCreditScore - 20)}}%; background-color: {{creditScoreDescriptor === '优秀' ? '#2ecc71' : (creditScoreDescriptor === '良好' ? '#3498db' : (creditScoreDescriptor === '一般' ? '#f1c40f' : '#e74c3c'))}};"></view>
@@ -35,7 +34,46 @@
     </block>
   </view>
 
-  <view class="trust-history-section" wx:if="{{hasUserInfo}}">
+  <!-- User Endorsements Section -->
+  <view class="endorsements-section profile-section-card" wx:if="{{hasUserInfo}}">
+    <view class="section-header">
+      <text class="section-title">邻里赞誉</text>
+      <!-- 
+        Button logic:
+        - The button's text and action depend on whether the logged-in user is viewing their own profile or someone else's.
+        - For this mock, `profileBeingViewedUserId` is a fixed mock ID.
+        - `userId` is the logged-in user's ID.
+        - If `userId === profileBeingViewedUserId`, it's their own profile.
+        - Otherwise, they are (conceptually) viewing another user's profile.
+      -->
+      <button 
+        class="endorse-user-btn action-btn" 
+        bindtap="openEndorseModal" 
+        wx:if="{{userId !== profileBeingViewedUserId && profileBeingViewedUserId}}"> 
+        <image src="/assets/icons/endorse_icon.png" class="btn-icon" /> 
+        赞赏 {{ usersData[profileBeingViewedUserId] ? usersData[profileBeingViewedUserId].nickname : '这位邻居' }}
+      </button>
+      <!-- If it's the user's own profile, or if profileBeingViewedUserId is not set (should not happen if user is logged in) -->
+       <button class="endorse-user-btn action-btn" disabled wx:elif="{{userId === profileBeingViewedUserId || !profileBeingViewedUserId}}">
+        <image src="/assets/icons/endorse_icon.png" class="btn-icon" /> 我的赞誉墙
+      </button>
+    </view>
+    <view wx:if="{{endorsementsReceived.length > 0}}" class="endorsements-list">
+      <view wx:for="{{endorsementsReceived}}" wx:key="endorsementId" class="endorsement-item">
+        <view class="endorsement-header">
+          <text class="endorser-name">{{item.endorserNickname || '一位热心邻居'}}</text>
+          <text class="endorsement-tag">{{item.endorsementType}}</text>
+        </view>
+        <text class="endorsement-comment" wx:if="{{item.comment}}">"{{item.comment}}"</text>
+        <text class="endorsement-date">{{item.createdAt}}</text>
+      </view>
+    </view>
+    <view wx:else class="empty-placeholder">
+      <text>还没有收到邻居的赞誉，多多参与社区活动吧！</text>
+    </view>
+  </view>
+
+  <view class="trust-history-section profile-section-card" wx:if="{{hasUserInfo}}"> <!-- Added common class -->
     <text class="section-title">邻里信用历史</text>
     <view wx:if="{{trustHistory.length > 0}}" class="trust-history-list">
       <view wx:for="{{trustHistory}}" wx:key="logId" class="trust-log-item">
@@ -44,7 +82,7 @@
         <text class="log-timestamp">{{item.timestamp}}</text>
       </view>
     </view>
-    <view wx:else class="empty-history-placeholder">
+    <view wx:else class="empty-placeholder"> <!-- Standardized class name -->
       <text>您最近的信用活动将在此处显示（例如：帮助邻居 +5分，参与活动 +2分）。</text>
     </view>
   </view>
@@ -61,10 +99,32 @@
         <text class="form-label">个人简介:</text>
         <textarea class="form-textarea" value="{{editableBio}}" bindinput="handleBioInput" placeholder="介绍一下自己吧 (例如：爱好，乐于助人的事情)" maxlength="100" />
       </view>
-      <!-- Add avatar editing later if needed -->
       <view class="modal-actions">
         <button class="cancel-btn" bindtap="hideEditModal">取消</button>
         <button class="submit-btn" bindtap="saveProfileChanges">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Endorse User Modal -->
+  <view class="modal-overlay" wx:if="{{showEndorsementModal}}" bindtap="closeEndorseModal">
+    <view class="modal-content" catchtap>
+      <text class="modal-title">赞赏 {{ usersData[profileBeingViewedUserId] ? usersData[profileBeingViewedUserId].nickname : (userInfo.nickName || '这位邻居') }}</text>
+      <view class="form-group">
+        <text class="form-label">选择赞赏类型:</text>
+        <picker bindchange="onEndorsementTypeChange" value="{{endorsementTypes.indexOf(selectedEndorsementType)}}" range="{{endorsementTypes}}">
+          <view class="picker form-input">
+            {{selectedEndorsementType || '请选择...'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="form-label">说点什么 (可选):</text>
+        <textarea class="form-textarea" value="{{endorsementComment}}" bindinput="handleEndorsementCommentInput" placeholder="例如：TA在团购中非常可靠！" maxlength="100" />
+      </view>
+      <view class="modal-actions">
+        <button class="cancel-btn" bindtap="closeEndorseModal">取消</button>
+        <button class="submit-btn" bindtap="submitEndorsement">提交赞赏</button>
       </view>
     </view>
   </view>
